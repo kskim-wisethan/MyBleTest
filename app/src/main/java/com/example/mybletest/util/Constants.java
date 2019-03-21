@@ -18,6 +18,7 @@ public class Constants {
     public static final String CLIENT_CONFIGURATION_DESCRIPTOR_SHORT_ID = "2902";
 
     public static final long SCAN_PERIOD = 5000;
+    public static String SCAN_FILTER = "C4:64:E3:F0:2E:65";
 
     // sample gatt attributes
     private static HashMap<String, String> attributes = new HashMap();

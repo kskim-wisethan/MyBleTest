@@ -121,6 +121,14 @@ public class BleManager {
         mBluetoothAdapter.stopLeScan(leScanCallback);
     }
 
+    public ServiceConnection getServiceConnection() {
+        return mServiceConnection;
+    }
+
+    public BroadcastReceiver getGattUpdateReceiver() {
+        return mGattUpdateReceiver;
+    }
+
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
@@ -138,7 +146,7 @@ public class BleManager {
         }
     };
 
-    private final BroadcastReceiver gattUpdateReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();

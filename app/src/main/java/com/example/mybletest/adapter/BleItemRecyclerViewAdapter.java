@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.example.mybletest.R;
 import com.example.mybletest.activity.BleItemDetailActivity;
-import com.example.mybletest.activity.BleItemDetailFragment;
 import com.example.mybletest.activity.BleItemListActivity;
+import com.example.mybletest.fragment.BleItemDetailFragment;
 import com.example.mybletest.model.BleModel;
 
 import java.util.List;
@@ -36,6 +36,7 @@ public class BleItemRecyclerViewAdapter
                 Bundle arguments = new Bundle();
                 arguments.putString(BleItemDetailFragment.BLE_ID, item.getUuid());
                 arguments.putString(BleItemDetailFragment.BLE_NAME, item.getName());
+                arguments.putSerializable(BleItemDetailFragment.BLE_ITEM, item);
                 BleItemDetailFragment fragment = new BleItemDetailFragment();
                 fragment.setArguments(arguments);
                 mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -46,6 +47,7 @@ public class BleItemRecyclerViewAdapter
                 Intent intent = new Intent(context, BleItemDetailActivity.class);
                 intent.putExtra(BleItemDetailFragment.BLE_ID, item.getUuid());
                 intent.putExtra(BleItemDetailFragment.BLE_NAME, item.getName());
+                intent.putExtra(BleItemDetailFragment.BLE_ITEM, item);
                 context.startActivity(intent);
             }
         }
@@ -79,6 +81,7 @@ public class BleItemRecyclerViewAdapter
                 Intent intent = new Intent(mParentActivity, BleItemDetailActivity.class);
                 intent.putExtra(BleItemDetailFragment.BLE_ID, mItems.get(position).getUuid());
                 intent.putExtra(BleItemDetailFragment.BLE_NAME, mItems.get(position).getName());
+                intent.putExtra(BleItemDetailFragment.BLE_ITEM, mItems.get(position));
                 mParentActivity.startActivity(intent);
             }
         });

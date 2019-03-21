@@ -15,6 +15,7 @@ import com.example.mybletest.adapter.BleItemRecyclerViewAdapter;
 import com.example.mybletest.model.BleModel;
 import com.example.mybletest.util.BleManager;
 import com.example.mybletest.util.CardsDecoration;
+import com.example.mybletest.util.Constants;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -30,31 +31,21 @@ import android.view.MenuItem;
 
 import com.example.mybletest.R;
 
-import com.example.mybletest.activity.dummy.DummyContent;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * An activity representing a list of BleItems. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link BleItemDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
+
 public class BleItemListActivity extends AppCompatActivity {
     private final static String TAG = BleItemListActivity.class.getSimpleName();
 
-    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
-    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+    public static final String EXTRAS_SCAN_FILTER = "SCAN_FILTER";
 
     private boolean mTwoPane = false;
-    private int mScanCount = 0;
-    private String mDeviceName = "";
-    private String mDeviceAddress = "";
-
     private ArrayList<BleModel> mDevices = new ArrayList<BleModel>();
+
+    private BleManager mBleManager;
     private RecyclerView mRecyclerView;
     private BleItemRecyclerViewAdapter mBleItemRecyclerViewAdapter;
 
@@ -62,10 +53,6 @@ public class BleItemListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bleitem_list);
-
-        final Intent intent = getIntent();
-        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +71,8 @@ public class BleItemListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
+        mBleManager = BleManager.getInstance(this);
+
         mBleItemRecyclerViewAdapter = new BleItemRecyclerViewAdapter(this, mDevices, mTwoPane);
         mRecyclerView = (RecyclerView) findViewById(R.id.ble_item_list);
         assert mRecyclerView != null;
@@ -96,13 +85,6 @@ public class BleItemListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
             NavUtils.navigateUpFromSameTask(this);
             return true;
         }
@@ -115,24 +97,42 @@ public class BleItemListActivity extends AppCompatActivity {
     }
 
     private void scanBleDevices() {
-        BleManager bm = BleManager.getInstance(this);
-        bm.scanBleDevice(new BleManager.BleDeviceCallback() {
+        mBleManager.scanBleDevice(new BleManager.BleDeviceCallback() {
             @Override
             public void onResponse(BleModel model) {
-                String id = model.getUuid();
-                if (id.compareTo("C4:64:E3:F0:2E:65") == 0) {
-                    ++mScanCount;
-                }
+                if (Constants.SCAN_FILTER.isEmpty()) {
+                    addDevice(model);
 
-                if (mScanCount > 1) {
-                    bm.stopScan();
-                    //mScanCount = 0;
                 } else {
-                    mDevices.add(model);
-                    mBleItemRecyclerViewAdapter.notifyItemChanged(mDevices.size() - 1);
+                    String id = model.getUuid();
+                    if (id.compareTo(Constants.SCAN_FILTER) == 0) {
+                        mBleManager.stopScan();
+                        addDevice(model);
+                    }
                 }
             }
         });
     }
 
+    private void addDevice(BleModel model) {
+        String id = model.getUuid();
+        int index = findDeviceId(id);
+        if (index >= 0) {
+            mDevices.set(index, model);
+            mBleItemRecyclerViewAdapter.notifyItemChanged(index);
+        } else {
+            mDevices.add(model);
+            mBleItemRecyclerViewAdapter.notifyItemChanged(mDevices.size() - 1);
+        }
+    }
+
+    private int findDeviceId(String id) {
+        int ret = -1;
+        for (int i = 0; i < mDevices.size(); i++) {
+            if (mDevices.get(i).getUuid().compareTo(id) == 0) {
+                ret = i;
+            }
+        }
+        return ret;
+    }
 }
