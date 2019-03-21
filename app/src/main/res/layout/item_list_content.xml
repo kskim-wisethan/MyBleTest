@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    style="@style/CardViewStyle"
+    android:layout_height="@dimen/sku_details_row_height"
+    app:cardBackgroundColor="@color/row_bg_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground"
+        android:padding="@dimen/sku_details_row_padding">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_item_address"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="@dimen/sku_details_row_text_size"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/text_item_rssi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/single_padding"
+                android:layout_marginLeft="@dimen/single_padding"
+                android:textColor="@color/ascent_color"
+                android:textSize="@dimen/sku_details_row_text_size"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/single_padding">
+
+            <ImageView
+                android:id="@+id/image_item_icon"
+                android:gravity="start"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+
+            <TextView
+                android:id="@+id/text_item_name"
+                android:layout_marginLeft="@dimen/double_padding"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:textSize="@dimen/sku_details_row_description_text_size"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_connect"
+            style="@style/ButtonStyle"
+            android:text="@string/button_connect"
+            android:layout_marginTop="@dimen/single_padding"
+            android:contentDescription="@string/button_connect"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

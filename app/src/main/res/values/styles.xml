@@ -1,0 +1,103 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBarWhite">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="colorPrimary">@color/colorSub</item>
+        <item name="colorPrimaryDark">@color/colorSubDark</item>
+        <item name="colorAccent">@color/colorSubAccent</item>
+
+        <item name="titleTextColor">@color/colorDarkGrayFont</item>
+        <item name="subtitleTextColor">@color/colorDarkGrayFont</item>
+
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:textColor">@color/colorDarkGrayFont</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorWhiteFont</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ExpandedAppBarPlus1" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">28.5sp</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CollapsedAppBarPlus1" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">24.5sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="CustSeekBar">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@android:drawable/progress_horizontal</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_horizontal</item>
+        <item name="android:minHeight">1dip</item>
+        <item name="android:maxHeight">10dip</item>
+        <item name="android:focusable">true</item>
+        <item name="android:color">#0000FF</item>
+        <item name="android:colorBackground">#0000FF</item>
+        <item name="android:colorAccent">#0000FF</item>
+        <item name="android:colorControlHighlight">#0000FF</item>
+        <item name="android:colorControlNormal">#0000FF</item>
+        <item name="android:colorControlActivated">#0000FF</item>
+    </style>
+
+    <!-- Button styles -->
+    <style name="BaseButtonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:layout_width">@dimen/button_width</item>
+        <item name="android:layout_height">@dimen/button_height</item>
+    </style>
+
+    <style name="ButtonStyle" parent="BaseButtonStyle">
+        <item name="android:background">@color/ascent_color</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_gravity">bottom|end</item>
+    </style>
+
+    <style name="DriveButtonStyle" parent="ButtonStyle">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:textColor">@color/ascent_color</item>
+    </style>
+
+    <!-- CardView -->
+    <style name="CardViewStyle" parent="CardView">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginRight">@dimen/card_view_margin</item>
+        <item name="android:layout_marginLeft">@dimen/card_view_margin</item>
+        <item name="cardCornerRadius">@dimen/card_view_card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_view_card_elevation</item>
+        <item name="cardPreventCornerOverlap">false</item>
+    </style>
+
+</resources>

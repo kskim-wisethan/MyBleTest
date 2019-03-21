@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_bluetooth"
+            android:icon="@drawable/ic_menu_bluetooth"
+            android:title="Bluetooth" />
+        <item
+            android:id="@+id/nav_scanble"
+            android:icon="@drawable/ic_menu_refresh"
+            android:title="Scan BLE" />
+        <item
+            android:id="@+id/nav_information"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="Information" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Options" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_connections"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Connections" />
+            <item
+                android:id="@+id/nav_data"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Data" />
+        </menu>
+    </item>
+
+</menu>
