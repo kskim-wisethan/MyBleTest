@@ -52,6 +52,7 @@ public class BleItemDetailFragment extends Fragment {
             mName = getArguments().getString(BLE_NAME);
             mItem = (BleModel) getArguments().getSerializable(BLE_ITEM);
 
+            //
             mList.add("Device ID : " + mItem.getUuid());
             mList.add("Device Name : " + mItem.getName());
             mList.add("Rssi : " + mItem.getRssi());
@@ -66,6 +67,7 @@ public class BleItemDetailFragment extends Fragment {
                 appBarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
             }
         }
+
     }
 
     @Override
@@ -88,9 +90,11 @@ public class BleItemDetailFragment extends Fragment {
 
     public void setList(ArrayList<String> list) {
         mList = list;
+        //
     }
 
     public void addList(String data) {
         mList.add(data);
+        // refresh
     }
 }
