@@ -162,7 +162,7 @@ public class BleItemDetailActivity extends AppCompatActivity {
 
             }
             // characteristic name
-            String characteristicName = Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getUuid().toString(), getString(R.string.unknown_characteristic));
+            String characteristicName = "> " + Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getUuid().toString(), getString(R.string.unknown_characteristic));
             characteristicName += " : ";
 
             for (int i = 0; i < data.length; i++) {
