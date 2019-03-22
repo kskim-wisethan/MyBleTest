@@ -95,6 +95,6 @@ public class BleItemDetailFragment extends Fragment {
 
     public void addList(String data) {
         mList.add(data);
-        // refresh
+        mAdapter.notifyItemChanged(mList.size() - 1);
     }
 }

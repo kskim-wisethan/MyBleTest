@@ -42,9 +42,13 @@ public class BleItemDetailActivity extends AppCompatActivity {
     private boolean mConnected = false;
     private BleModel mModel;
 
+    private int mServiceIndex = 0;
+    private int mCharacteristicIndex = 0;
+
     BleItemDetailFragment mFragment;
     private BluetoothLeService mBluetoothLeService;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics;
+    private BluetoothGattCharacteristic mNotifyCharacteristic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +61,9 @@ public class BleItemDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                mServiceIndex = 0;
+                mCharacteristicIndex = 0;
+                requestCharacteristicValue();
             }
         });
 
@@ -118,6 +123,7 @@ public class BleItemDetailActivity extends AppCompatActivity {
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
                 displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                displayData(intent.getByteArrayExtra(BluetoothLeService.EXTRA_DATA_BYTES));
             }
         }
     };
@@ -147,6 +153,47 @@ public class BleItemDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void displayData(final byte[] data) {
+        if (data != null) {
+            if (mCharacteristicIndex == 0) {
+                // service name
+                String serviceName = Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getService().getUuid().toString(), getString(R.string.unknown_service));
+                mFragment.addList(serviceName);
+
+            }
+            // characteristic name
+            String characteristicName = Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getUuid().toString(), getString(R.string.unknown_characteristic));
+            characteristicName += " : ";
+
+            for (int i = 0; i < data.length; i++) {
+                characteristicName += String.format("%02X ", data[i]);
+            }
+            mFragment.addList(characteristicName);
+
+            ++mCharacteristicIndex;
+            int characteristicsLength = mGattCharacteristics.get(mServiceIndex).size();
+            if (mCharacteristicIndex >= characteristicsLength) {
+                ++mServiceIndex;
+                mCharacteristicIndex = 0;
+
+                int servicesLength = mGattCharacteristics.size();
+
+                if (mServiceIndex < servicesLength && mGattCharacteristics.get(mServiceIndex).size() == 0) {
+                    ++mServiceIndex;
+                }
+
+                if (mServiceIndex >= servicesLength) {
+                    mServiceIndex = -1;
+                    mCharacteristicIndex = -1;
+                }
+            }
+        }
+
+        if (mServiceIndex >= 0 && mCharacteristicIndex >= 0) {
+            requestCharacteristicValue();
+        }
+    }
+
     private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null) {
             return;
@@ -155,8 +202,7 @@ public class BleItemDetailActivity extends AppCompatActivity {
         String unknownServiceString = getResources().getString(R.string.unknown_service);
         String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
         ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
-        ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
-                = new ArrayList<ArrayList<HashMap<String, String>>>();
+        ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData = new ArrayList<ArrayList<HashMap<String, String>>>();
         mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
 
         for (BluetoothGattService gattService : gattServices) {
@@ -219,5 +265,23 @@ public class BleItemDetailActivity extends AppCompatActivity {
         super.onDestroy();
         unbindService(mServiceConnection);
         mBluetoothLeService = null;
+    }
+
+    void requestCharacteristicValue() {
+        if (mGattCharacteristics != null) {
+            final BluetoothGattCharacteristic characteristic = mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex);
+            final int charaProp = characteristic.getProperties();
+            if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
+                if (mNotifyCharacteristic != null) {
+                    mBluetoothLeService.setCharacteristicNotification(mNotifyCharacteristic, false);
+                    mNotifyCharacteristic = null;
+                }
+                mBluetoothLeService.readCharacteristic(characteristic);
+            }
+            if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+                mNotifyCharacteristic = characteristic;
+                mBluetoothLeService.setCharacteristicNotification(characteristic, true);
+            }
+        }
     }
 }

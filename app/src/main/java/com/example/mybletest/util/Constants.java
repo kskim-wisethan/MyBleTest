@@ -31,10 +31,26 @@ public class Constants {
     static {
         // Sample Services.
         attributes.put("00001800-0000-1000-8000-00805f9b34fb", "Generic Access");
+        attributes.put("00001801-0000-1000-8000-00805f9b34fb", "Generic Attribute");
         attributes.put("0000180a-0000-1000-8000-00805f9b34fb", "Device Information");
         attributes.put("0000180d-0000-1000-8000-00805f9b34fb", "Heart Rate Service");
         attributes.put("0000181a-0000-1000-8000-00805f9b34fb", "Environmental Sensing");
+
         // Sample Characteristics.
+        attributes.put("00002a00-0000-1000-8000-00805f9b34fb", "Device Name");
+        attributes.put("00002a01-0000-1000-8000-00805f9b34fb", "Appearance");
+        attributes.put("00002a04-0000-1000-8000-00805f9b34fb", "Peripheral Preferred Connection Parameters");
+
+        attributes.put("00002a23-0000-1000-8000-00805f9b34fb", "System ID");
+        attributes.put("00002a24-0000-1000-8000-00805f9b34fb", "Model Number String");
+        attributes.put("00002a25-0000-1000-8000-00805f9b34fb", "Serial Number String");
+        attributes.put("00002a26-0000-1000-8000-00805f9b34fb", "Firmware Revision String");
+        attributes.put("00002a27-0000-1000-8000-00805f9b34fb", "Hardware Revision String");
+        attributes.put("00002a28-0000-1000-8000-00805f9b34fb", "Software Revision String");
+        attributes.put("00002a29-0000-1000-8000-00805f9b34fb", "Manufacturer Name String");
+        attributes.put("00002a2a-0000-1000-8000-00805f9b34fb", "IEEE 11073-20601 Regulatory Certification Data List");
+        attributes.put("00002a50-0000-1000-8000-00805f9b34fb", "PnP ID");
+
         attributes.put(HEART_RATE_MEASUREMENT, "Heart Rate Measurement");
         attributes.put(TEMPERATURE, "Temperature");
         attributes.put(HUMIDITY, "Humidity");
