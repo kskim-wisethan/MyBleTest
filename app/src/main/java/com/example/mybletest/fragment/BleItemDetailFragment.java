@@ -52,12 +52,13 @@ public class BleItemDetailFragment extends Fragment {
             mName = getArguments().getString(BLE_NAME);
             mItem = (BleModel) getArguments().getSerializable(BLE_ITEM);
 
-            //
+            /*
             mList.add("Device ID : " + mItem.getUuid());
             mList.add("Device Name : " + mItem.getName());
             mList.add("Rssi : " + mItem.getRssi());
             mList.add("Description : " + mItem.getDescription());
             mList.add("Scan Record : \n" + mItem.getScanRecord());
+            */
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);

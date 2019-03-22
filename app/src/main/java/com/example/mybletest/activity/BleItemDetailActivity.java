@@ -157,7 +157,7 @@ public class BleItemDetailActivity extends AppCompatActivity {
         if (data != null) {
             if (mCharacteristicIndex == 0) {
                 // service name
-                String serviceName = Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getService().getUuid().toString(), getString(R.string.unknown_service));
+                String serviceName = "[" + Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getService().getUuid().toString(), getString(R.string.unknown_service)) + "]";
                 mFragment.addList(serviceName);
 
             }
