@@ -14,6 +14,7 @@ import com.example.mybletest.fragment.BleItemDetailFragment;
 import com.example.mybletest.model.BleModel;
 import com.example.mybletest.service.BluetoothLeService;
 import com.example.mybletest.util.Constants;
+import com.example.mybletest.util.StringUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -155,33 +156,34 @@ public class BleItemDetailActivity extends AppCompatActivity {
 
     private void displayData(final byte[] data) {
         if (data != null) {
+            String serviceName = Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getService().getUuid().toString(), getString(R.string.unknown_service));
             if (mCharacteristicIndex == 0) {
-                // service name
-                String serviceName = "[" + Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getService().getUuid().toString(), getString(R.string.unknown_service)) + "]";
-                mFragment.addList(serviceName);
-
+                String serviceTitle = "[[ " + serviceName + " ]]";
+                mFragment.addList(serviceTitle);
             }
-            // characteristic name
-            String characteristicName = "> " + Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getUuid().toString(), getString(R.string.unknown_characteristic));
-            characteristicName += " : ";
 
-            for (int i = 0; i < data.length; i++) {
-                characteristicName += String.format("%02X ", data[i]);
+            String characteristicValue = "> " + Constants.lookup(mGattCharacteristics.get(mServiceIndex).get(mCharacteristicIndex).getUuid().toString(), getString(R.string.unknown_characteristic)) + " : ";
+            if (serviceName.compareTo("Custom Service") == 0) {
+                String characteristicValueHex = StringUtils.byteArrayInIntegerFormat(data);
+                characteristicValue += characteristicValueHex;
+            } else if (StringUtils.checkString(data)) {
+                String characteristicValueString = StringUtils.stringFromBytes(data);
+                characteristicValue += characteristicValueString;
+            } else {
+                String characteristicValueHex = StringUtils.byteArrayInHexFormat(data);
+                characteristicValue += characteristicValueHex;
             }
-            mFragment.addList(characteristicName);
+            mFragment.addList(characteristicValue);
 
             ++mCharacteristicIndex;
             int characteristicsLength = mGattCharacteristics.get(mServiceIndex).size();
             if (mCharacteristicIndex >= characteristicsLength) {
                 ++mServiceIndex;
                 mCharacteristicIndex = 0;
-
                 int servicesLength = mGattCharacteristics.size();
-
                 if (mServiceIndex < servicesLength && mGattCharacteristics.get(mServiceIndex).size() == 0) {
                     ++mServiceIndex;
                 }
-
                 if (mServiceIndex >= servicesLength) {
                     mServiceIndex = -1;
                     mCharacteristicIndex = -1;

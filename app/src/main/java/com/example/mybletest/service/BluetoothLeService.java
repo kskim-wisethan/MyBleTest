@@ -43,7 +43,10 @@ public class BluetoothLeService extends Service {
     public final static String EXTRA_DATA_BYTES = "com.example.bluetooth.le.EXTRA_DATA_BYTES";
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString(Constants.HEART_RATE_MEASUREMENT);
-
+    public final static UUID UUID_USER_DEFINED_CHARACTERISTIC1 = UUID.fromString(Constants.USER_DEFINED_CHARACTERISTIC1);
+    public final static UUID UUID_USER_DEFINED_CHARACTERISTIC2 = UUID.fromString(Constants.USER_DEFINED_CHARACTERISTIC2);
+    public final static UUID UUID_USER_DEFINED_CHARACTERISTIC3 = UUID.fromString(Constants.USER_DEFINED_CHARACTERISTIC3);
+    public final static UUID UUID_USER_DEFINED_CHARACTERISTIC4 = UUID.fromString(Constants.USER_DEFINED_CHARACTERISTIC4);
 
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
@@ -105,8 +108,8 @@ public class BluetoothLeService extends Service {
             final int heartRate = characteristic.getIntValue(format, 1);
             Log.d(TAG, String.format("Received heart rate: %d", heartRate));
             intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+
         } else {
-            // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();
             if (data != null && data.length > 0) {
                 final StringBuilder stringBuilder = new StringBuilder(data.length);
@@ -220,8 +223,7 @@ public class BluetoothLeService extends Service {
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
         if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                    UUID.fromString(Constants.CLIENT_CHARACTERISTIC_CONFIG));
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(Constants.CLIENT_CHARACTERISTIC_CONFIG));
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             mBluetoothGatt.writeDescriptor(descriptor);
         }
